@@ -21,6 +21,16 @@ public class Pokemon extends Card implements CardType{
 		this.infos = newInfos;
 	}
 	
+	public Pokemon(int newNumber, String newName, String newElement, int newHp, Cost newWeakness, Cost newResistance, String newInfos) {
+		super.numCard = newNumber;
+		super.name = newName;
+		this.type = newElement;
+		this.hp = newHp;
+		this.weakness = newWeakness;
+		this.resistance = newResistance;
+		this.infos = newInfos;
+	}
+	
 	public String toString() {
 		return "Nom : " + super.name + "\n" + 
 				"Type : " + this.type + "\n" + 

@@ -1,5 +1,7 @@
 package Pokedeck;
 
+import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class MainView extends JFrame{
@@ -24,13 +26,18 @@ public class MainView extends JFrame{
 	private JPanel panel_Add;
 	private JPanel panel_Delete;
 	private JLabel lblMonLabel;
+	private JTable table_Cards;
+	private File saveFile;
+	private Card[] deck;
 
 	/**
 	 * Create the application.
 	 */
-	public MainView(){
+	public MainView(File myFile, Card[] myDeck){
+		this.saveFile = myFile;
+		this.deck = myDeck;
+		setTitle("PokeDeck");
 		initialize();
-		this.setVisible(true);
 	}
 
 	/**
@@ -38,12 +45,11 @@ public class MainView extends JFrame{
 	 */
 	private void initialize() {
 		controller = new MainController(this);
-		this.setBounds(100, 100, 244, 244);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(100, 100, 407, 453);
 		getContentPane().setLayout(null);
 		
 		panel_Add = new JPanel();
-		panel_Add.setBounds(0, 0, 228, 181);
+		panel_Add.setBounds(163, 0, 228, 181);
 		getContentPane().add(panel_Add);
 		panel_Add.setLayout(null);
 		
@@ -86,6 +92,15 @@ public class MainView extends JFrame{
 		lblMonLabel = new JLabel("mon Label");
 		lblMonLabel.setBounds(10, 11, 48, 14);
 		panel_Delete.add(lblMonLabel);
+		
+		JPanel panel_Display = new JPanel();
+		panel_Display.setBounds(10, 11, 371, 368);
+		getContentPane().add(panel_Display);
+		panel_Display.setLayout(null);
+		
+		table_Cards = new JTable();
+		table_Cards.setBounds(36, 335, 312, -300);
+		panel_Display.add(table_Cards);
 		btnNewButton.addActionListener(controller);
 		
 		menuBar = new JMenuBar();
@@ -108,6 +123,11 @@ public class MainView extends JFrame{
 		
 		mnJouer = new JMenu("Jouer");
 		menuBar.add(mnJouer);
+		
+	}
+	
+	public void Show(){
+		this.setVisible(true);
 	}
 	
 	public void InterfaceChange(Object source){
@@ -126,6 +146,7 @@ public class MainView extends JFrame{
         }
 	}
 	
+	@SuppressWarnings("unused")
 	private void Home() {
 		
 		this.repaint();
@@ -141,5 +162,19 @@ public class MainView extends JFrame{
 		panel_Add.setVisible(false);
 		panel_Delete.setVisible(true);
         this.repaint();
+	}
+	
+	public void windowClosing(WindowEvent e)
+	{
+		try
+		{
+		    ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream (saveFile));
+			oos.writeObject (this.deck);
+		    oos.close();
+		}
+		catch (IOException exception)
+		{
+		    System.out.println ("Erreur lors de l'écriture : " + exception.getMessage());
+		}
 	}
 }

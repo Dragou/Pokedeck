@@ -12,7 +12,7 @@ public class MainController implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object  source=e.getSource();
+		Object source = e.getSource();
         
 		myView.InterfaceChange(source);
 	}
